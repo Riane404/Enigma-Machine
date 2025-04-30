@@ -21,6 +21,19 @@ plugboard = Plugboard(plugboard_pairs)
 rotors = [Rotor(rotor_wirings[i], notches[i]) for i in range(3)]
 reflector = Reflector(reflector_wiring)
 
+# Store initial positions
+initial_positions = ['A', 'A', 'A']
+
+# Rotor display update inside reset_rotors
+def reset_rotors():
+    for rotor, pos in zip(rotors, initial_positions):
+        rotor.position = ord(pos.upper()) - ord('A')
+    rotor_positions = machine.get_rotor_positions()  # Get updated rotor positions
+    for i in range(3):
+        rotor_labels[i].config(text=rotor_positions[i])  # Update rotor labels
+    output_display.config(text="")  # Clear output
+
+
 # Create Enigma machine
 machine = EnigmaMachine(rotors, reflector, plugboard)
 
@@ -78,6 +91,10 @@ plugboard_title.grid(row=3, column=0, columnspan=3, pady=(20, 5))
 
 plugboard_display = tk.Label(root, text=", ".join([f"{a} ⇄ {b}" for a, b in plugboard_pairs]), font=("Courier", 12), fg="blue")
 plugboard_display.grid(row=4, column=0, columnspan=3)
+
+reset_button = tk.Button(root, text="Reset Rotors", command=reset_rotors)
+reset_button.grid(row=0, column=3, pady=10)
+
 
 # Start GUI
 root.mainloop()
