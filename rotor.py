@@ -18,3 +18,7 @@ class Rotor:
     def rotate(self) -> bool:
         self.position = (self.position + 1) % 26
         return self.position == self.notch
+    
+    def get_current_wiring(self):
+        return self.wiring[self.position:] + self.wiring[:self.position]
+
