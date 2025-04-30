@@ -13,10 +13,13 @@ rotor_wirings = [
 notches = ['Q', 'E', 'V']  # Notch positions for rotors
 reflector_wiring = "YRUHQSLDPXNGOKMIEBFZCWVJAT"  # Reflector B
 
-# Initialize rotors, reflector, plugboard
+# Plugboard connections (default, non-editable)
+plugboard_pairs = [('A', 'M'), ('F', 'I'), ('N', 'V'), ('P', 'S'), ('T', 'U')]
+plugboard = Plugboard(plugboard_pairs)
+
+# Initialize rotors, reflector
 rotors = [Rotor(rotor_wirings[i], notches[i]) for i in range(3)]
 reflector = Reflector(reflector_wiring)
-plugboard = Plugboard([('A', 'M'), ('F', 'I'), ('N', 'V'), ('P', 'S'), ('T', 'U')])  # Example plugboard
 
 # Create Enigma machine
 machine = EnigmaMachine(rotors, reflector, plugboard)
@@ -25,7 +28,7 @@ machine = EnigmaMachine(rotors, reflector, plugboard)
 root = tk.Tk()
 root.title("Enigma Machine Simulator")
 
-# Input label and field
+# Input field
 input_label = tk.Label(root, text="Enter a letter:", font=("Courier", 14))
 input_label.grid(row=0, column=0, padx=10, pady=10)
 
@@ -51,14 +54,14 @@ encrypt_button.grid(row=0, column=2, padx=10)
 
 entry.bind("<Return>", encrypt_letter)
 
-# Output display
+# Output
 output_label = tk.Label(root, text="Encrypted Output:", font=("Courier", 14))
 output_label.grid(row=1, column=0, padx=10)
 
 output_display = tk.Label(root, text="", font=("Courier", 24), fg="green", width=2)
 output_display.grid(row=1, column=1, padx=5)
 
-# Rotor window labels
+# Rotor display
 rotor_title = tk.Label(root, text="Rotor Positions:", font=("Courier", 14))
 rotor_title.grid(row=2, column=0, pady=10)
 
@@ -69,5 +72,12 @@ for i in range(3):
     lbl.grid(row=2, column=i+1, padx=5)
     rotor_labels.append(lbl)
 
-# Start the GUI
+# Plugboard display (static, non-editable)
+plugboard_title = tk.Label(root, text="Plugboard Connections:", font=("Courier", 14, "bold"))
+plugboard_title.grid(row=3, column=0, columnspan=3, pady=(20, 5))
+
+plugboard_display = tk.Label(root, text=", ".join([f"{a} ⇄ {b}" for a, b in plugboard_pairs]), font=("Courier", 12), fg="blue")
+plugboard_display.grid(row=4, column=0, columnspan=3)
+
+# Start GUI
 root.mainloop()
